@@ -48,7 +48,7 @@ class RegisterController extends AbstractController
                 . $_SERVER['HTTP_HOST']
                 . '/inscription/'
                 . $user->getEmail()
-                . '-'
+                . '|'
                 . $token
                 . '"></a>
             ';
@@ -68,7 +68,6 @@ class RegisterController extends AbstractController
     /**
      * @Route("/inscription/{email}|{token}", name="register_activation")
      */
-
     public function activate_account(User $user, EntityManagerInterface $manager, $email, $token): Response
     {
         if (sha1($user->getEmail()) !== $token || $user->getActive()) {

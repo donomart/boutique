@@ -47,7 +47,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     min = 8,
      *     max = 50,
      *     minMessage = "Le mot de passe doit faire au moins {{ limit }} caractères.",
-     *     maxMessage = "Le mot de passe doit faire moins de {{ limit }} caractères."
+     *     maxMessage = "Le mot de passe doit faire moins de {{ limit }} caractères.",
+     *    groups={"registration"}
      * )
      * @Assert\Regex (
      *     pattern="#(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}#",
@@ -122,10 +123,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $orders;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ResetPassword::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $resetPasswords;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->resetPasswords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -376,5 +383,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName() {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return Collection|ResetPassword[]
+     */
+    public function getResetPasswords(): Collection
+    {
+        return $this->resetPasswords;
+    }
+
+    public function addResetPassword(ResetPassword $resetPassword): self
+    {
+        if (!$this->resetPasswords->contains($resetPassword)) {
+            $this->resetPasswords[] = $resetPassword;
+            $resetPassword->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResetPassword(ResetPassword $resetPassword): self
+    {
+        if ($this->resetPasswords->removeElement($resetPassword)) {
+            // set the owning side to null (unless already changed)
+            if ($resetPassword->getUser() === $this) {
+                $resetPassword->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
