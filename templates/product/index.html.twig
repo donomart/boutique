@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos produits - Boutique
+{% endblock %}
+
+{% block content %}
+
+	<h1 class="mt-3">Nos produits</h1>
+	<div class="row">
+		<div class="col-md-2">
+
+			{{form(form)}}
+			</div>
+
+			<div class="col-md-10">
+				<div class="row">
+					{% if error %}
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<strong>{{error}}</strong>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endif %}
+
+					{% for product in products %}
+						<div class="col-md-4 mt-3 text-center">
+							<a href="{{path('show_product', {'slug':product.slug})}}">
+								<img src="/uploads/{{product.illustration}}" alt="{{product.name}}" class="img-fluid">
+								<h5>{{product.name}}</h5>
+							</a>
+							<div class="product ">
+								{{product.subtitle}}
+								<div class="fw-bold">{{(product.price/100) | number_format(2)}}
+									€</div>
+								<div>{{product.category.name}}</div>
+							</div>
+
+						</div>
+
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}

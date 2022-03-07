@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos produits - Boutique
+{% endblock %}
+
+{% block content %}
+	<h1 class="mt-3">Poster un commentaire sur le produit
+		{{product.name}}</h1>
+	<h2>Votre avis compte</h2>
+
+	{% if product.isProductFromUser(app.user) %}
+		{% if product.getCommentFromUser(app.user) is null %}
+			{{form(form)}}
+				{% else %}
+					<h5 class="alert alert-danger mt-3">
+						<strong>Vous avez déjà laissé un commentaire.</strong>
+					</h5>
+			{% endif %}
+		{% else %}
+			<h5 class="alert alert-danger mt-3">
+				<strong>Vous n'avez pas acheté cet article.</strong>
+			</h5>
+		{% endif %}
+	{% endblock %}

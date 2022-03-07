@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - Boutique
+{% endblock %}
+
+{% block content %}
+	<h1 class="mt-3">Mon compte</h1>
+
+	Bienvenue,
+	{{app.user.firstName}}
+	{{app.user.lastName}}! - Vous pouvez gérer vos informations personnelles.
+	<br>
+
+	<a href="{{path('account_password')}}">
+		- Modifier mon mot de passe
+	</a>
+	<br>
+
+	<a href="{{path('account_address')}}">
+		- Gérer mes adresses
+	</a>
+
+	<br>
+
+	<a href="{{path('account_order')}}">
+		- Mes commandes
+	</a>
+
+{% endblock %}
